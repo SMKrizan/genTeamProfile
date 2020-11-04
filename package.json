@@ -1,0 +1,25 @@
+{
+  "name": "genteamprofile",
+  "version": "1.0.0",
+  "description": "![license badge](https://img.shields.io/badge/license-CC-brightgreen)",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SMKrizan/gen-TeamProfile.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SMKrizan/gen-TeamProfile/issues"
+  },
+  "homepage": "https://github.com/SMKrizan/gen-TeamProfile#readme",
+  "devDependencies": {
+    "jest": "^26.6.2"
+  }
+}
