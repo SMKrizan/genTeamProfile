@@ -1,9 +1,10 @@
 // access npm modules
 const inquirer = require('inquirer');
-// access file generation dependencies
+
+// file generation
 const generateRoster = require('./src/roster-template.js');
-// will include copyFile if stylesheet is used
-const { writeFile, copyFile } = require('../utils/generateRoster.js');
+const { writeFile, copyFile } = require('./utils/generateRoster.js');
+
 // access core library modules
 const Engineer = require('./lib/Engineer');
 const Intern = require('./lib/Intern');
@@ -13,7 +14,7 @@ const Manager = require('./lib/Manager');
 const teamData = [];
 
 // user content required for new team initialization
-function initializeTeam() {
+const initializeTeam = () => {
     console.log(`
     ============================================
     Answer these questions to set up a new team:
@@ -24,7 +25,7 @@ function initializeTeam() {
         {
             type: 'input',
             name: 'nameManager',
-            message: "Team manager's name (required): "
+            message: "Team manager's name (required): ",
             validate: nameInput => {
                 if (nameInput) {
                     return true;
@@ -37,7 +38,7 @@ function initializeTeam() {
         {
             type: 'number',
             name: 'idManager',
-            message: "Team manager's employee ID (required): "
+            message: "Team manager's employee ID (required): ",
             validate: nameInput => {
                 if (nameInput) {
                     return true;
@@ -50,7 +51,7 @@ function initializeTeam() {
         {
             type: 'input',
             name: 'emailManager',
-            message: "Team manager's employee email (required): "
+            message: "Team manager's employee email (required): ",
             validate: nameInput => {
                 if (nameInput) {
                     return true;
@@ -63,7 +64,7 @@ function initializeTeam() {
         {
             type: 'number',
             name: 'office',
-            message: "Team manager's office number (required): "
+            message: "Team manager's office number (required): ",
             validate: nameInput => {
                 if (nameInput) {
                     return true;
@@ -74,28 +75,28 @@ function initializeTeam() {
             }
         }
     ])
-    .then(managerData => {
-        const manager = new Manager(managerData.name, managerData.id, managerData.email, managerData.office)
-        teamData.push(manager)
-        addOrFinalize()
-    })
+        .then(managerData => {
+            const manager = new Manager(managerData.name, managerData.id, managerData.email, managerData.office)
+            teamData.push(manager)
+            addOrFinalize()
+        })
 };
 
 const addOrFinalize = () => {
     return inquirer
         .prompt([
-            type: 'list',
-            name: 'addOrComplete',
-            message: 'Would you like to add a team member or finalize this team?',
-            choices: ['Engineer', 'Intern', 'Finalize team roster'],
+            {
+                type: 'list',
+                name: 'addOrComplete',
+                message: 'Would you like to add a team member or finalize this team?',
+                choices: ['Engineer', 'Intern', 'Finalize team roster'],
+            }
         ])
         .then(selection => {
             if (selection.addOrComplete = 'Engineer') {
                 addEngineer();
-                break;
             } else if (selection.addOrComplete = 'Intern') {
                 addIntern();
-                break;
             } else {
                 finalizeRoster();
             }
@@ -115,7 +116,7 @@ const addEngineer = teamData => {
             {
                 type: 'input',
                 name: 'nameEngineer',
-                message: "Engineer's name: "
+                message: "Engineer's name: ",
                 validate: nameInput => {
                     if (nameInput) {
                         return true;
@@ -128,7 +129,7 @@ const addEngineer = teamData => {
             {
                 type: 'number',
                 name: 'idEngineer',
-                message: "Engineer's employee ID (required): "
+                message: "Engineer's employee ID (required): ",
                 validate: nameInput => {
                     if (nameInput) {
                         return true;
@@ -141,7 +142,7 @@ const addEngineer = teamData => {
             {
                 type: 'input',
                 name: 'emailEngineer',
-                message: "Engineer's employee email (required): "
+                message: "Engineer's employee email (required): ",
                 validate: nameInput => {
                     if (nameInput) {
                         return true;
@@ -154,7 +155,7 @@ const addEngineer = teamData => {
             {
                 type: 'number',
                 name: 'github',
-                message: "Engineer's GitHub username (required): "
+                message: "Engineer's GitHub username (required): ",
                 validate: nameInput => {
                     if (nameInput) {
                         return true;
@@ -185,7 +186,7 @@ const addIntern = teamData => {
             {
                 type: 'input',
                 name: 'nameIntern',
-                message: "Intern's name: "
+                message: "Intern's name: ",
                 validate: nameInput => {
                     if (nameInput) {
                         return true;
@@ -198,7 +199,7 @@ const addIntern = teamData => {
             {
                 type: 'number',
                 name: 'idIntern',
-                message: "Intern's employee ID (required): "
+                message: "Intern's employee ID (required): ",
                 validate: nameInput => {
                     if (nameInput) {
                         return true;
@@ -211,7 +212,7 @@ const addIntern = teamData => {
             {
                 type: 'input',
                 name: 'emailIntern',
-                message: "Intern's employee email (required): "
+                message: "Intern's employee email (required): ",
                 validate: nameInput => {
                     if (nameInput) {
                         return true;
@@ -224,7 +225,7 @@ const addIntern = teamData => {
             {
                 type: 'number',
                 name: 'school',
-                message: "Intern's school (required): "
+                message: "Intern's school (required): ",
                 validate: nameInput => {
                     if (nameInput) {
                         return true;
@@ -240,24 +241,29 @@ const addIntern = teamData => {
             const intern = new Intern(internData.name, internData.id, internData.email, internData.school)
             teamData.push(intern)
             addOrFinalize()
-        }
-    }
+        })
 }
 
-// the input-gathering function is called in order to prompt its output to the file-generating function
-finalizeRoster()
-    // the output function 'teamData' is sent to the 'generateRoster' function
+// this function establishes the flow of ansynchronous information
+function finalizeTeam() {
+    inquirer.prompt(initializeTeam)
+    // the final output array 'teamData' is passed to the 'generateRoster' function
     .then(teamData => {
-        // returns generateRoster(teamData) to file creation;
-        const manager = new Manager(teamData.managername, teamData.managerId, teamData.manager.Email, teamData.office);
-        team.push(manager)
+        // returns generateRoster using 'teamData' inputs for file creation;
+        return generateRoster(teamData);
     })
-    // a file will then be genereated, 'teamRoster.html', within which the html template code will be actuated
+    // a file will then be genereated, 'teamRoster.html', within which the html template code will be applied
     .then(htmlFile => {
         return writeFile(htmlFile);
+    })
+    .then(writeFileResponse => {
+        console.log(writeFileResponse)
+        return copyFile();
+    })
+    .then(copyFileResponse => {
+        console.log(copyFileResponse);
     })
     .catch(err => {
         console.log(err);
     });
-
-
+}
