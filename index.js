@@ -81,6 +81,7 @@ const initializeTeam = () => {
             addOrFinalize()
         })
 };
+initializeTeam()
 
 const addOrFinalize = () => {
     return inquirer
@@ -89,7 +90,7 @@ const addOrFinalize = () => {
                 type: 'list',
                 name: 'addOrComplete',
                 message: 'Would you like to add a team member or finalize this team?',
-                choices: ['Engineer', 'Intern', 'Finalize team roster'],
+                choices: ['Engineer', 'Intern', 'Finalize team'],
             }
         ])
         .then(selection => {
@@ -98,7 +99,7 @@ const addOrFinalize = () => {
             } else if (selection.addOrComplete = 'Intern') {
                 addIntern();
             } else {
-                finalizeRoster();
+                finalizeTeam();
             }
         })
 };
@@ -121,7 +122,7 @@ const addEngineer = teamData => {
                     if (nameInput) {
                         return true;
                     } else {
-                        console.log("Please enter engineer's name");
+                        console.log("Please enter engineer's name.");
                         return false;
                     }
                 }
@@ -134,7 +135,7 @@ const addEngineer = teamData => {
                     if (nameInput) {
                         return true;
                     } else {
-                        console.log("Please enter engineer's employee ID");
+                        console.log("Please enter engineer's employee ID.");
                         return false;
                     }
                 }
@@ -147,7 +148,7 @@ const addEngineer = teamData => {
                     if (nameInput) {
                         return true;
                     } else {
-                        console.log("Please enter Engineer's employee email");
+                        console.log("Please enter Engineer's employee email.");
                         return false;
                     }
                 }
@@ -160,7 +161,7 @@ const addEngineer = teamData => {
                     if (nameInput) {
                         return true;
                     } else {
-                        console.log("Please enter Engineer's GitHub username");
+                        console.log("Please enter Engineer's GitHub username.");
                         return false;
                     }
                 }
@@ -246,7 +247,7 @@ const addIntern = teamData => {
 
 // this function establishes the flow of ansynchronous information
 function finalizeTeam() {
-    inquirer.prompt(initializeTeam)
+    initializeTeam()
     // the final output array 'teamData' is passed to the 'generateRoster' function
     .then(teamData => {
         // returns generateRoster using 'teamData' inputs for file creation;
