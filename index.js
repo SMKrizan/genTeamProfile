@@ -12,13 +12,8 @@ const Manager = require('./lib/Manager');
 
 const teamData = [];
 
-
-function Team() {
-    this.teamMembers = {};
-}
-
 // user content required for new team initialization
-const initializeTeam = () => {
+function initializeTeam() {
     console.log(`
     ============================================
     Answer these questions to set up a new team:
@@ -38,9 +33,6 @@ const initializeTeam = () => {
                     return false;
                 }
             }
-            .then(({ name }) => {
-                this.employee.name = new Manager(name);
-            })
         },
         {
             type: 'number',
@@ -54,9 +46,6 @@ const initializeTeam = () => {
                     return false;
                 }
             }
-            .then(({ id }) => {
-                this.employee.id = new Manager(id);
-            })
         },
         {
             type: 'input',
@@ -70,9 +59,6 @@ const initializeTeam = () => {
                     return false;
                 }
             }
-            .then(({ email }) => {
-                this.employee.email = new Manager(email);
-            })
         },
         {
             type: 'number',
@@ -86,25 +72,34 @@ const initializeTeam = () => {
                     return false;
                 }
             }
-            .then(({ office }) => {
-                this.manager.office - new Manager(office);
-            })
-        },
+        }
+    ])
+    .then(managerData => {
+        const manager = new Manager(managerData.name, managerData.id, managerData.email, managerData.office)
+        memberData.push(manager)
+        addOrFinalize()
+    })
+};
+
+const addOrFinalize = () => {
+    return inquirer
+    .prompt([
         {
             type: 'list',
             name: 'addOrComplete',
             message: 'Would you like to add an engineer or intern to this team?',
             choices: ['Engineer', 'Intern', 'Finish building team roster'],
+
         },
     ])
-};
+}
 
 // captures data returned from 'initializeTeam' and calls itself recursively for as many team members required
-const addTeamMember = teamData => {
+const addEngineer = teamData => {
     console.log(`
-    ===============================
-    Enter data for new team member:
-    ===============================
+    ========================================================
+    Enter the following data to add an Engineer to the team:
+    ========================================================
     `);
     // an empty array is created to hold data from a newly initialized team. Otherwise, data will be added to the existing team data array.
     if (!teamData.members) {
@@ -113,7 +108,64 @@ const addTeamMember = teamData => {
     return inquirer
         .prompt([
             {
-
+                type: 'input',
+                name: 'nameEngineer',
+                message: "Engineer's name: "
+                validate: nameInput => {
+                    if (nameInput) {
+                        return true;
+                    } else {
+                        console.log("Please enter the team engineer's name");
+                        return false;
+                    }
+                }
+            },
+            {
+                type: 'number',
+                name: 'idEngineer',
+                message: "Engineer's employee ID (required): "
+                validate: nameInput => {
+                    if (nameInput) {
+                        return true;
+                    } else {
+                        console.log("Please enter the team manager's employee ID");
+                        return false;
+                    }
+                }
+            },
+            {
+                type: 'input',
+                name: 'emailManager',
+                message: "Team manager's employee email (required): "
+                validate: nameInput => {
+                    if (nameInput) {
+                        return true;
+                    } else {
+                        console.log("Please enter the team manager's employee email");
+                        return false;
+                    }
+                }
+            },
+            {
+                type: 'number',
+                name: 'office',
+                message: "Team manager's office number (required): "
+                validate: nameInput => {
+                    if (nameInput) {
+                        return true;
+                    } else {
+                        console.log("Please enter the team manager's office number");
+                        return false;
+                    }
+                }
+            },
+            {
+                type: 'list',
+                name: 'addOrComplete',
+                message: 'Would you like to add an engineer or intern to this team?',
+                choices: ['Engineer', 'Intern', 'Finish building team roster'],
+            },
+    
             }
         ])
     // new member data is pushed to the 'memberData' array and a final dataset is returned to 'initializeTeam' as 'teamData'
