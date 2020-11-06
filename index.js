@@ -90,7 +90,7 @@ const addOrFinalize = () => {
                 type: 'list',
                 name: 'addOrComplete',
                 message: 'Would you like to add a team member or finalize this team?',
-                choices: ['Engineer', 'Intern', 'Finalize team'],
+                choices: ['Engineer', 'Intern', 'Finalize team']
             }
         ])
         .then(selection => {
@@ -154,7 +154,7 @@ const addEngineer = teamData => {
                 }
             },
             {
-                type: 'number',
+                type: 'input',
                 name: 'github',
                 message: "Engineer's GitHub username (required): ",
                 validate: nameInput => {
