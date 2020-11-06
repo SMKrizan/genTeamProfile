@@ -5,11 +5,11 @@ const generateRoster = require('./src/roster-template.js');
 // will include copyFile if stylesheet is used
 const { writeFile, copyFile } = require('../utils/generateRoster.js');
 // access core library modules
-const Employee = require('./lib/Employee');
 const Engineer = require('./lib/Engineer');
 const Intern = require('./lib/Intern');
 const Manager = require('./lib/Manager');
 
+// an empty array is created to hold data for a newly initialized team.
 const teamData = [];
 
 // user content required for new team initialization
@@ -76,35 +76,40 @@ function initializeTeam() {
     ])
     .then(managerData => {
         const manager = new Manager(managerData.name, managerData.id, managerData.email, managerData.office)
-        memberData.push(manager)
+        teamData.push(manager)
         addOrFinalize()
     })
 };
 
 const addOrFinalize = () => {
     return inquirer
-    .prompt([
-        {
+        .prompt([
             type: 'list',
             name: 'addOrComplete',
-            message: 'Would you like to add an engineer or intern to this team?',
-            choices: ['Engineer', 'Intern', 'Finish building team roster'],
-
-        },
-    ])
-}
+            message: 'Would you like to add a team member or finalize this team?',
+            choices: ['Engineer', 'Intern', 'Finalize team roster'],
+        ])
+        .then(selection => {
+            if (selection.addOrComplete = 'Engineer') {
+                addEngineer();
+                break;
+            } else if (selection.addOrComplete = 'Intern') {
+                addIntern();
+                break;
+            } else {
+                finalizeRoster();
+            }
+        })
+};
 
 // captures data returned from 'initializeTeam' and calls itself recursively for as many team members required
 const addEngineer = teamData => {
     console.log(`
-    ========================================================
-    Enter the following data to add an Engineer to the team:
-    ========================================================
+    ====================================================
+    Answer the following to add an Engineer to the team:
+    ====================================================
     `);
-    // an empty array is created to hold data from a newly initialized team. Otherwise, data will be added to the existing team data array.
-    if (!teamData.members) {
-        teamData.members = [];
-    }
+
     return inquirer
         .prompt([
             {
@@ -115,7 +120,7 @@ const addEngineer = teamData => {
                     if (nameInput) {
                         return true;
                     } else {
-                        console.log("Please enter the team engineer's name");
+                        console.log("Please enter engineer's name");
                         return false;
                     }
                 }
@@ -128,102 +133,119 @@ const addEngineer = teamData => {
                     if (nameInput) {
                         return true;
                     } else {
-                        console.log("Please enter the team manager's employee ID");
+                        console.log("Please enter engineer's employee ID");
                         return false;
                     }
                 }
             },
             {
                 type: 'input',
-                name: 'emailManager',
-                message: "Team manager's employee email (required): "
+                name: 'emailEngineer',
+                message: "Engineer's employee email (required): "
                 validate: nameInput => {
                     if (nameInput) {
                         return true;
                     } else {
-                        console.log("Please enter the team manager's employee email");
+                        console.log("Please enter Engineer's employee email");
                         return false;
                     }
                 }
             },
             {
                 type: 'number',
-                name: 'office',
-                message: "Team manager's office number (required): "
+                name: 'github',
+                message: "Engineer's GitHub username (required): "
                 validate: nameInput => {
                     if (nameInput) {
                         return true;
                     } else {
-                        console.log("Please enter the team manager's office number");
+                        console.log("Please enter Engineer's GitHub username");
+                        return false;
+                    }
+                }
+            }
+        ])
+        // new member data is pushed to the 'teamData' array and a final dataset is returned to 'initializeTeam' as 'teamData'
+        .then(engineerData => {
+            const engineer = new Engineer(engineerData.name, engineerData.id, engineerData.email, engineerData.github)
+            teamData.push(engineer)
+            addOrFinalize()
+        })
+}
+
+const addIntern = teamData => {
+    console.log(`
+    ====================================================
+    Answer the following to add an Intern to the team:
+    ====================================================
+    `);
+
+    return inquirer
+        .prompt([
+            {
+                type: 'input',
+                name: 'nameIntern',
+                message: "Intern's name: "
+                validate: nameInput => {
+                    if (nameInput) {
+                        return true;
+                    } else {
+                        console.log("Please enter intern's name");
                         return false;
                     }
                 }
             },
             {
-                type: 'list',
-                name: 'addOrComplete',
-                message: 'Would you like to add an engineer or intern to this team?',
-                choices: ['Engineer', 'Intern', 'Finish building team roster'],
+                type: 'number',
+                name: 'idIntern',
+                message: "Intern's employee ID (required): "
+                validate: nameInput => {
+                    if (nameInput) {
+                        return true;
+                    } else {
+                        console.log("Please enter intern's employee ID");
+                        return false;
+                    }
+                }
             },
-    
+            {
+                type: 'input',
+                name: 'emailIntern',
+                message: "Intern's employee email (required): "
+                validate: nameInput => {
+                    if (nameInput) {
+                        return true;
+                    } else {
+                        console.log("Please enter Intern's employee email");
+                        return false;
+                    }
+                }
+            },
+            {
+                type: 'number',
+                name: 'school',
+                message: "Intern's school (required): "
+                validate: nameInput => {
+                    if (nameInput) {
+                        return true;
+                    } else {
+                        console.log("Please enter intern's school");
+                        return false;
+                    }
+                }
             }
         ])
-    // new member data is pushed to the 'memberData' array and a final dataset is returned to 'initializeTeam' as 'teamData'
-
-}
-
-class Manager {
-
-    inquirer
-    .prompt({
-        type: 'input',
-        name: 'name',
-        message: "Enter the team member's name: "
-    })
-    .then(({ name }) => {
-    this.employee = new Employee(name);
-})
-}
-
-initializeTeam.prototype.id = function () {
-    inquirer
-        .prompt({
-            type: 'number',
-            name: 'id',
-            message: "Enter the team member's employee id:  "
-        })
-        .then(({ id }) => {
-            this.employee.id = new Employee.id(id);
-        })
-}
-
-initializeTeam.prototype.email = function () {
-    inquirer
-        .prompt({
-            type: 'input',
-            name: 'email',
-            message: "Enter the team member's work email: "
-        })
-        .then(({ email }) => {
-            this.employee.email = new Employee.email(email);
-        })
-}
-
-initializeTeam.prototype.role = function () {
-    inquirer
-        .prompt({
-            type: 'list',
-            name: 'role',
-            message: "Enter the team member's role: ",
-            choices: ['employee', 'engineer', 'manager', 'intern']
-        })
-        .then(({ role }) => {
-            this.employee.role = new Employee.role(role);
-        })
+        // new member data is pushed to the 'teamData' array and a final dataset is returned to 'initializeTeam' as 'teamData'
+        .then(internData => {
+            const intern = new Intern(internData.name, internData.id, internData.email, internData.school)
+            teamData.push(intern)
+            addOrFinalize()
+        }
+    }
 }
 
 // the input-gathering function is called in order to prompt its output to the file-generating function
-initializeTeam()
+finalizeRoster()
     // the output function 'teamData' is sent to the 'generateRoster' function
     .then(teamData => {
         // returns generateRoster(teamData) to file creation;
