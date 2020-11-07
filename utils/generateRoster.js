@@ -3,7 +3,7 @@ const fs = require('fs');
 // output for this function is creation of a new HTML file, 'teamRoster.html'
 const writeFile = fileContent => {
     return new Promise((resolve, reject) => {
-        fs.writeFile('../dist/teamRoster.html', fileContent, err => {
+        fs.writeFile('dist/teamRoster.html', fileContent, err => {
             // if there is an error, related message will be sent to Promise's 'catch()' method
             if (err) {
                 reject(err);
@@ -21,7 +21,7 @@ const writeFile = fileContent => {
 
 const copyFile = () => {
     return new Promise((resolve, reject) => {
-        fs.copyFile('../src/style.css', 'dist.style.css', err => {
+        fs.copyFile('src/style.css', 'dist/style.css', err => {
             if (err) {
                 reject(err);
                 return;

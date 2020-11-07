@@ -1,22 +1,29 @@
 // function generates manager card
-const displayManager = manager => {
-    return `
-    <div class="row">
-    <div class="col s12 m6">
-      <div class="card blue-grey darken-1">
-        <div class="card-content white-text">
-          <span class="card-title">${manager.getName()}</span>
-          <h5>${manager.getRole()}</h5>
-          <h6>ID: ${manager.getID()}</h6>
-          <h6>ID: ${manager.getOffice()}</h6>
-        </div>
-        <div class="card-action">
-          <a href="mailto:${manager.getEmail}">Email: ${manager.getEmail}</a>
+
+console.log(teamData)
+
+const displayCards = teamData => {
+  const displayManager = manager => {
+      return `
+      <div class="row">
+      <div class="col s12 m6">
+        <div class="card blue-grey darken-1">
+          <div class="card-content white-text">
+            <span class="card-title">${manager.getName()}</span>
+            <h5>${manager.getRole()}</h5>
+            <h6>ID: ${manager.getID()}</h6>
+            <h6>ID: ${manager.getOffice()}</h6>
+          </div>
+          <div class="card-action">
+            <a href="mailto:${manager.getEmail}">Email: ${manager.getEmail}</a>
+          </div>
         </div>
       </div>
-    </div>
-  </div>`
+    </div>`
+  }
+  
 }
+
 
 // function generates engineer card
 const displayEngineer = engineer => {
@@ -58,7 +65,7 @@ const displayIntern = intern => {
   </div>`
 }
 
-// function generates HTML for roster
+// function generates string of HTML for roster
 module.exports = rosterData => {
     return `
     <!DOCTYPE html>

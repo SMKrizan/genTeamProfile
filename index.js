@@ -2,7 +2,7 @@
 const inquirer = require('inquirer');
 
 // file generation
-const generateRoster = require('./src/roster-template.js');
+const generateHTML = require('./src/roster-template.js');
 const { writeFile, copyFile } = require('./utils/generateRoster.js');
 
 // access core library modules
@@ -24,7 +24,7 @@ const initializeTeam = () => {
     return inquirer.prompt([
         {
             type: 'input',
-            name: 'nameManager',
+            name: 'name',
             message: "Team manager's name (required): ",
             validate: nameInput => {
                 if (nameInput) {
@@ -37,7 +37,7 @@ const initializeTeam = () => {
         },
         {
             type: 'number',
-            name: 'idManager',
+            name: 'id',
             message: "Team manager's employee ID (required): ",
             validate: nameInput => {
                 if (nameInput) {
@@ -50,7 +50,7 @@ const initializeTeam = () => {
         },
         {
             type: 'input',
-            name: 'emailManager',
+            name: 'email',
             message: "Team manager's employee email (required): ",
             validate: nameInput => {
                 if (nameInput) {
@@ -94,9 +94,11 @@ const addOrFinalize = () => {
             }
         ])
         .then(selection => {
-            if (selection.addOrComplete = 'Engineer') {
+            console.log("selection: ", selection);
+            console.log("selection.addOrComplete: ", selection.addOrComplete);
+            if (selection.addOrComplete === 'Engineer') {
                 addEngineer();
-            } else if (selection.addOrComplete = 'Intern') {
+            } else if (selection.addOrComplete === 'Intern') {
                 addIntern();
             } else {
                 finalizeTeam();
@@ -105,7 +107,7 @@ const addOrFinalize = () => {
 };
 
 // captures data returned from 'initializeTeam' and calls itself recursively for as many team members required
-const addEngineer = teamData => {
+const addEngineer = () => {
     console.log(`
     ====================================================
     Answer the following to add an Engineer to the team:
@@ -116,7 +118,7 @@ const addEngineer = teamData => {
         .prompt([
             {
                 type: 'input',
-                name: 'nameEngineer',
+                name: 'name',
                 message: "Engineer's name: ",
                 validate: nameInput => {
                     if (nameInput) {
@@ -129,7 +131,7 @@ const addEngineer = teamData => {
             },
             {
                 type: 'number',
-                name: 'idEngineer',
+                name: 'id',
                 message: "Engineer's employee ID (required): ",
                 validate: nameInput => {
                     if (nameInput) {
@@ -142,7 +144,7 @@ const addEngineer = teamData => {
             },
             {
                 type: 'input',
-                name: 'emailEngineer',
+                name: 'email',
                 message: "Engineer's employee email (required): ",
                 validate: nameInput => {
                     if (nameInput) {
@@ -175,7 +177,7 @@ const addEngineer = teamData => {
         })
 }
 
-const addIntern = teamData => {
+const addIntern = () => {
     console.log(`
     ====================================================
     Answer the following to add an Intern to the team:
@@ -186,7 +188,7 @@ const addIntern = teamData => {
         .prompt([
             {
                 type: 'input',
-                name: 'nameIntern',
+                name: 'name',
                 message: "Intern's name: ",
                 validate: nameInput => {
                     if (nameInput) {
@@ -199,7 +201,7 @@ const addIntern = teamData => {
             },
             {
                 type: 'number',
-                name: 'idIntern',
+                name: 'id',
                 message: "Intern's employee ID (required): ",
                 validate: nameInput => {
                     if (nameInput) {
@@ -212,7 +214,7 @@ const addIntern = teamData => {
             },
             {
                 type: 'input',
-                name: 'emailIntern',
+                name: 'email',
                 message: "Intern's employee email (required): ",
                 validate: nameInput => {
                     if (nameInput) {
@@ -224,7 +226,7 @@ const addIntern = teamData => {
                 }
             },
             {
-                type: 'number',
+                type: 'input',
                 name: 'school',
                 message: "Intern's school (required): ",
                 validate: nameInput => {
@@ -245,26 +247,47 @@ const addIntern = teamData => {
         })
 }
 
-// this function establishes the flow of ansynchronous information
+const mockData = [
+    Manager {
+        name: 'Eve Jones',
+        id: 34567,
+        email: 'ejones@work.org',
+        office: 1234
+    },
+    Engineer {
+        name: 'Tom Jones',
+        id: 12334,
+        email: 'tjones@work.org',
+        github: 'tjones'
+    },
+    Engineer {
+        name: 'Elsa Tomay',
+        id: 12674,
+        email: 'etomay@work.org',
+        github: 'etomay'
+    },
+    Intern {
+        name: 'Jules Verne',
+        id: 78901,
+        email: 'jverne@work.org',
+        school: 'University of Wisconsin'
+    }
+]
+
+const integrateData = generateHTML(mockData)
+writeFile(integrateData)
+
+
+
+// passes final input array for page generation
 function finalizeTeam() {
-    initializeTeam()
-    // the final output array 'teamData' is passed to the 'generateRoster' function
-    .then(teamData => {
-        // returns generateRoster using 'teamData' inputs for file creation;
-        return generateRoster(teamData);
-    })
-    // a file will then be genereated, 'teamRoster.html', within which the html template code will be applied
-    .then(htmlFile => {
-        return writeFile(htmlFile);
-    })
-    .then(writeFileResponse => {
-        console.log(writeFileResponse)
-        return copyFile();
-    })
-    .then(copyFileResponse => {
-        console.log(copyFileResponse);
-    })
-    .catch(err => {
-        console.log(err);
-    });
+    console.log(teamData)
+    // data passes to 'roster-template.js' which integrates the data into a string of HTML...
+    const integrateData = generateHTML(teamData)
+    // ...which is then written to file via 'generateRoster.js'
+    writeFile(integrateData)
+        .then(console.log("Your roster has been created."))
+    copyFile(integrateData)
+        .then(console.log("The stylesheet has been applied."))
+
 }
