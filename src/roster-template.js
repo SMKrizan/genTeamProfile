@@ -3,7 +3,8 @@
 // }
 
 
-const displayCards = rosterData => {
+const display = rosterData => {
+
   // function generates manager card
   const displayManager = manager => {
     return `
@@ -79,7 +80,7 @@ const displayCards = rosterData => {
 module.exports = rosterData => {
   console.log('rosterData:', rosterData);
 
-  const {Manager, engineerData, internData, ...data} = rosterData
+  // const {Manager, engineerData, internData, ...data} = rosterData
 
   return `
     <!DOCTYPE html>
@@ -110,7 +111,7 @@ module.exports = rosterData => {
           </ul>
         </div>
       </nav>
-      ${displayCards}
+      ${rosterData}
     </body>
 `
 }

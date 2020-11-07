@@ -178,7 +178,8 @@ const addEngineer = engineerData => {
         .then(engineerData => {
             const engineer = new Engineer(engineerData.name, engineerData.id, engineerData.email, engineerData.github)
             teamData.engineerData.push(engineer)
-            // teamData.push(engineer)
+            console.log('engineerData:', engineerData)
+            console.log('engineer:', engineer)
             addOrFinalize()
         })
 }
@@ -254,7 +255,8 @@ const addIntern = internData => {
         .then(internData => {
             const intern = new Intern(internData.name, internData.id, internData.email, internData.school)
             teamData.internData.push(intern)
-            // teamData.push(intern)
+            console.log('internData:', internData)
+            console.log('intern:', intern)
             addOrFinalize()
         })
 }
