@@ -1,17 +1,19 @@
 // access npm modules
 const inquirer = require('inquirer');
 
+// an empty array is created to hold data for a newly initialized team.
+const teamData = [];
+
 // file generation
 const generateHTML = require('./src/roster-template.js');
 const { writeFile, copyFile } = require('./utils/generateRoster.js');
+// generateHTML.printData(teamData);
 
 // access core library modules
 const Engineer = require('./lib/Engineer');
 const Intern = require('./lib/Intern');
 const Manager = require('./lib/Manager');
 
-// an empty array is created to hold data for a newly initialized team.
-const teamData = [];
 
 // user content required for new team initialization
 const initializeTeam = () => {
@@ -94,8 +96,6 @@ const addOrFinalize = () => {
             }
         ])
         .then(selection => {
-            console.log("selection: ", selection);
-            console.log("selection.addOrComplete: ", selection.addOrComplete);
             if (selection.addOrComplete === 'Engineer') {
                 addEngineer();
             } else if (selection.addOrComplete === 'Intern') {
@@ -107,12 +107,17 @@ const addOrFinalize = () => {
 };
 
 // captures data returned from 'initializeTeam' and calls itself recursively for as many team members required
-const addEngineer = () => {
+const addEngineer = engineerData => {
     console.log(`
     ====================================================
     Answer the following to add an Engineer to the team:
     ====================================================
     `);
+
+        // If this the the first project being entered, an array for holding 'project' data is created. Otherwise, added projects will be added to existing array property.
+        if (!teamData.engineerData) {
+            teamData.engineerData = [];
+        }
 
     return inquirer
         .prompt([
@@ -172,17 +177,23 @@ const addEngineer = () => {
         // new member data is pushed to the 'teamData' array and a final dataset is returned to 'initializeTeam' as 'teamData'
         .then(engineerData => {
             const engineer = new Engineer(engineerData.name, engineerData.id, engineerData.email, engineerData.github)
-            teamData.push(engineer)
+            teamData.engineerData.push(engineer)
+            // teamData.push(engineer)
             addOrFinalize()
         })
 }
 
-const addIntern = () => {
+const addIntern = internData => {
     console.log(`
     ====================================================
     Answer the following to add an Intern to the team:
     ====================================================
     `);
+
+    // If this the the first project being entered, an array for holding 'project' data is created. Otherwise, added projects will be added to existing array property.
+    if (!teamData.internData) {
+        teamData.internData = [];
+    }
 
     return inquirer
         .prompt([
@@ -242,42 +253,11 @@ const addIntern = () => {
         // new member data is pushed to the 'teamData' array and a final dataset is returned to 'initializeTeam' as 'teamData'
         .then(internData => {
             const intern = new Intern(internData.name, internData.id, internData.email, internData.school)
-            teamData.push(intern)
+            teamData.internData.push(intern)
+            // teamData.push(intern)
             addOrFinalize()
         })
 }
-
-const mockData = [
-    Manager {
-        name: 'Eve Jones',
-        id: 34567,
-        email: 'ejones@work.org',
-        office: 1234
-    },
-    Engineer {
-        name: 'Tom Jones',
-        id: 12334,
-        email: 'tjones@work.org',
-        github: 'tjones'
-    },
-    Engineer {
-        name: 'Elsa Tomay',
-        id: 12674,
-        email: 'etomay@work.org',
-        github: 'etomay'
-    },
-    Intern {
-        name: 'Jules Verne',
-        id: 78901,
-        email: 'jverne@work.org',
-        school: 'University of Wisconsin'
-    }
-]
-
-const integrateData = generateHTML(mockData)
-writeFile(integrateData)
-
-
 
 // passes final input array for page generation
 function finalizeTeam() {
@@ -289,5 +269,45 @@ function finalizeTeam() {
         .then(console.log("Your roster has been created."))
     copyFile(integrateData)
         .then(console.log("The stylesheet has been applied."))
-
 }
+
+
+// const mockData = [
+//     new Manager(
+//         'Eve Jones',
+//         34567,
+//         'ejones@work.org',
+//         1234
+//     ),
+//     new Engineer(
+//         'Tom Jones',
+//         12334,
+//         'tjones@work.org',
+//         'tjones'
+//     ),
+//     new Engineer(
+//         'Elsa Tomay',
+//         12674,
+//         'etomay@work.org',
+//         'etomay'
+//     ),
+//     new Intern(
+//         'Jules Verne',
+//         78901,
+//         'jverne@work.org',
+//         'University of Wisconsin'
+//     )
+// ]
+
+
+// function finalizeTeam() {
+//     console.log(teamData)
+//     const integrateData = generateHTML(teamData)
+//     writeFile(integrateData)
+// }
+
+// finalizeTeam();
+// const teamData = mockData;
+
+// const generateHTML = require('./src/roster-template.js');
+// const { writeFile, copyFile } = require('./utils/generateRoster.js');

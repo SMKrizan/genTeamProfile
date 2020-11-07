@@ -1,73 +1,87 @@
-// function generates manager card
+// const printData = teamData => {
+//   console.log('teamData:', teamData)
+// }
 
-console.log(teamData)
 
-const displayCards = teamData => {
+const displayCards = rosterData => {
+  // function generates manager card
   const displayManager = manager => {
-      return `
+    return `
+    <li class="collection-item">
       <div class="row">
-      <div class="col s12 m6">
-        <div class="card blue-grey darken-1">
-          <div class="card-content white-text">
-            <span class="card-title">${manager.getName()}</span>
-            <h5>${manager.getRole()}</h5>
-            <h6>ID: ${manager.getID()}</h6>
-            <h6>ID: ${manager.getOffice()}</h6>
-          </div>
-          <div class="card-action">
-            <a href="mailto:${manager.getEmail}">Email: ${manager.getEmail}</a>
+        <div class="col s12 m6">
+          <div class="card blue-grey darken-1">
+            <div class="card-content white-text">
+              <span class="card-title">${manager.getName()}</span>
+              <h5>${manager.getRole()}</h5>
+              <h6>ID: ${manager.getID()}</h6>
+              <h6>ID: ${manager.getOffice()}</h6>
+            </div>
+            <div class="card-action">
+              <a href="mailto:${manager.getEmail}">Email: ${manager.getEmail}</a>
+            </div>
           </div>
         </div>
       </div>
-    </div>`
-  }
-  
-}
+    </li>`
+  };
 
+  // function generates engineer card
+  const displayEngineer = engineerData => {
+    engineerData.forEach(engineer => {
+      return `
+      <li class="collection-item">
+        <div class="row">
+          <div class="col s12 m6">
+            <div class="card blue-grey darken-1">
+              <div class="card-content white-text">
+                <span class="card-title">${engineer.getName()}</span>
+                <h5>${engineer.getRole()}</h5>
+                <h6>ID: ${engineer.getID()}</h6>
+              </div>
+              <div class="card-action">
+                <a href="mailto:${engineer.getEmail}">Email: ${engineer.getEmail}</a>
+                <a href="https://github.com/${engineer.getGithub}">GitHub Username: ${engineer.getGithub}</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>`
+    })
+  };
 
-// function generates engineer card
-const displayEngineer = engineer => {
-    return `
-    <div class="row">
-    <div class="col s12 m6">
-      <div class="card blue-grey darken-1">
-        <div class="card-content white-text">
-        <span class="card-title">${engineer.getName()}</span>
-        <h5>${engineer.getRole()}</h5>
-        <h6>ID: ${engineer.getID()}</h6>
-      </div>
-      <div class="card-action">
-        <a href="mailto:${engineer.getEmail}">Email: ${engineer.getEmail}</a>
-        <a href="https://github.com/${engineer.getGithub}">GitHub Username: ${engineer.getGithub}</a>
-      </div>
-      </div>
-    </div>
-  </div>`
-}
-
-// function generates intern card
-const displayIntern = intern => {
-    return `
-    <div class="row">
-    <div class="col s12 m6">
-      <div class="card blue-grey darken-1">
-        <div class="card-content white-text">
-        <span class="card-title">${intern.getName()}</span>
-        <h5>${intern.getRole()}</h5>
-        <h6>ID: ${intern.getID()}</h6>
-        <h6>${intern.getSchool()}</h6>
-      </div>
-      <div class="card-action">
-        <a href="mailto:${intern.getEmail}">Email: ${intern.getEmail}</a>
-      </div>
-      </div>
-    </div>
-  </div>`
-}
+  // function generates intern card
+  const displayIntern = internData => {
+    internData.forEach(intern => {
+      return `
+      <li class="collection-item">
+        <div class="row">
+          <div class="col s12 m6">
+            <div class="card blue-grey darken-1">
+              <div class="card-content white-text">
+                <span class="card-title">${intern.getName()}</span>
+                <h5>${intern.getRole()}</h5>
+                <h6>ID: ${intern.getID()}</h6>
+                <h6>${intern.getSchool()}</h6>
+              </div>
+              <div class="card-action">
+                <a href="mailto:${intern.getEmail}">Email: ${intern.getEmail}</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>`
+    })
+  };
+};
 
 // function generates string of HTML for roster
 module.exports = rosterData => {
-    return `
+  console.log('rosterData:', rosterData);
+
+  const {Manager, engineerData, internData, ...data} = rosterData
+
+  return `
     <!DOCTYPE html>
     <html lang="en">
     
@@ -83,12 +97,20 @@ module.exports = rosterData => {
     </head>
 
     <body>
-    <ul class="collection with-header">
-    <li class="collection-header"><h4>Team Roster</h4></li>
-    <li class="collection-item"></li>
-    <li class="collection-item">Alvin</li>
-    <li class="collection-item">Alvin</li>
-    <li class="collection-item">Alvin</li>
-  </ul>
+      <nav>
+        <div class="nav-wrapper">
+          <a href="#" class="brand-logo right">Team Roster</a>
+          <ul id="nav-mobile" class="left hide-on-med-and-down">
+            <li><a href="#">Manager</a></li>
+
+            <li><a href="#">Engineers</a></li>
+
+            <li><a href="#">Interns</a></li>
+
+          </ul>
+        </div>
+      </nav>
+      ${displayCards}
+    </body>
 `
 }
