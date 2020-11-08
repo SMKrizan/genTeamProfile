@@ -3,78 +3,76 @@ const display = () => {
   // function generates manager card
   const displayManager = (manager) => {
     return `
-    <li class="collection-item">
-      <div class="row">
-        <div class="col s12 m6">
-          <div class="card blue-grey darken-1">
-            <div class="card-content white-text">
-              <span class="card-title">${manager.getName()}</span>
-              <h5>${manager.getRole()}</h5>
-              <h6>Employee ID: ${manager.getId()}</h6>
-              <h6>Office: ${manager.getOffice()}</h6>
-            </div>
-            <div class="card-action">
-              <a href="mailto:${manager.getEmail()}">Email: ${manager.getEmail()}</a>
-            </div>
+    <div class="col s12 m6 l6">  
+      <div class="card">
+        <div class="card-content">
+          <span class="card-title">${manager.getName()}</span>
+          <h6>${manager.getRole()}</h6>
+          <h6>Employee ID: ${manager.getId()}</h6>
+          <h6>Office: ${manager.getOffice()}</h6>
+        </div>
+        <div class="card-action">
+          <a id="link" href="mailto:${manager.getEmail()}">Email: ${manager.getEmail()}</a>
+        </div>
+      </div>
+    </div>
+    `
+  };
+
+  // function generates an engineer card for each engineer as a string of html
+  const displayEngineer = (engineer) => {
+    const engrs = [];
+    for (i=0; i < engineer.length; i++) {
+      engrs[i] = `
+      <div class="col s12 m6 l6">  
+        <div class="card">
+          <div class="card-content">
+            <span class="card-title">${engineer[i].getName()}</span>
+            <h6>${engineer[i].getRole()}</h6>
+            <h6>Employee ID: ${engineer[i].getId()}</h6>
+          </div>
+          <div class="card-action">
+            <a id="link" href="mailto:${engineer[i].getEmail()}">Email: ${engineer[i].getEmail()}</a>
+            <a id="link" href="https://github.com/${engineer[i].getGithub()}">GitHub: ${engineer[i].getGithub()}</a>
           </div>
         </div>
       </div>
-    </li>`
-  };
-
-  // function generates engineer card
-  const displayEngineer = (engineer) => {
-      for (i=0; i < engineer.length; i++) {
-      return `
-      <li class="collection-item">
-        <div class="row">
-          <div class="col s12 m6">
-            <div class="card blue-grey darken-1">
-              <div class="card-content white-text">
-                <span class="card-title">${engineer[i].getName()}</span>
-                <h5>${engineer[i].getRole()}</h5>
-                <h6>Employee ID: ${engineer[i].getId()}</h6>
-              </div>
-              <div class="card-action">
-                <a href="mailto:${engineer[i].getEmail()}">Email: ${engineer[i].getEmail()}</a>
-                <a href="https://github.com/${engineer[i].getGithub()}">GitHub Username: ${engineer[i].getGithub()}</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </li>`
-    }
+      `
+    };
+    engrs.push(engrs[i]);
+    return engrs.join("")
   };  
 
-  // function generates intern card
+  // function generates an intern card for each intern as a string of html
   const displayIntern = (intern) => {
-      for (i=0; i < intern.length; i++) {
-        return `
-        <li class="collection-item">
-          <div class="row">
-            <div class="col s12 m6">
-              <div class="card blue-grey darken-1">
-                <div class="card-content white-text">
-                  <span class="card-title">${intern[i].getName()}</span>
-                  <h5>${intern[i].getRole()}</h5>
-                  <h6>Employee ID: ${intern[i].getId()}</h6>
-                  <h6>${intern[i].getSchool()}</h6>
-                </div>
-                <div class="card-action">
-                  <a href="mailto:${intern[i].getEmail()}">Email: ${intern[i].getEmail()}</a>
-                </div>
-              </div>
-            </div>
+    intrs = [];
+    for (i=0; i < intern.length; i++) {
+      intrs[i] = `
+      <div class="col s12 m6 l6">  
+        <div class="card">
+          <div class="card-content">
+            <span class="card-title">${intern[i].getName()}</span>
+            <h6>${intern[i].getRole()}</h6>
+            <h6>Employee ID: ${intern[i].getId()}</h6>
+            <h6>${intern[i].getSchool()}</h6>
           </div>
-        </li>`
-      }
+          <div class="card-action">
+            <a id="link" href="mailto:${intern[i].getEmail()}">Email: ${intern[i].getEmail()}</a>
+          </div>
+        </div>
+      </div>
+      `
+      };
+    intrs.push(intrs[i])
+    return intrs.join("");
   };
+
   return {displayManager, displayEngineer, displayIntern}
+
 };
 
 // function generates string of HTML for roster
 module.exports = (rosterData) => {
-  console.log('rosterData:', rosterData);
 
   const displayTeam = display();
 
@@ -94,19 +92,26 @@ module.exports = (rosterData) => {
     </head>
 
     <body>
-      <nav>
-        <div class="nav-wrapper">
-          <a href="#" class="brand-logo right">Team Roster</a>
-          <ul id="nav-mobile" class="left hide-on-med-and-down">
-            <li><a href="#">Manager</a></li>
-            <li><a href="#">Engineers</a></li>
-            <li><a href="#">Interns</a></li>
-          </ul>
+      <header>
+        <div class="nav-wrapper green darken-3">
+          <h3 id="title" class="brand-logo center white-text">Team Roster</h3>
         </div>
-      </nav>
-      ${displayTeam.displayManager(rosterData.manager[0])}
-      ${displayTeam.displayEngineer(rosterData.engineer)}
-      ${displayTeam.displayIntern(rosterData.intern)}
+      </header>
+
+      <main>
+        <div class="row">
+          ${displayTeam.displayManager(rosterData.manager[0])}
+          ${displayTeam.displayEngineer(rosterData.engineer)}
+          ${displayTeam.displayIntern(rosterData.intern)}
+        </div>
+      </main>
+
+      <footer id="ftr" class="page-footer">
+          <div class="container">
+            © 2020 Sara Krizan
+            <a class="right" href="https://github.com/SMKrizan">GitHub.com/SMKrizan</a>
+          </div>
+      </footer>
     </body>
-`
+  `
 }

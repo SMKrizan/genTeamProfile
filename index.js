@@ -2,7 +2,7 @@
 const inquirer = require('inquirer');
 
 // an empty array is created to hold data for a newly initialized team.
-const teamData = {manager: [], intern: [], engineer: []};
+const teamData = { manager: [], intern: [], engineer: [] };
 
 // file generation
 const generateHTML = require('./src/roster-template.js');
@@ -113,11 +113,6 @@ const addEngineer = (engineerData) => {
     ====================================================
     `);
 
-        // If this the the first project being entered, an array for holding 'project' data is created. Otherwise, added projects will be added to existing array property.
-        // if (!teamData.engineerData) {
-        //     teamData.engineerData = [];
-        // }
-
     return inquirer
         .prompt([
             {
@@ -188,11 +183,6 @@ const addIntern = (internData) => {
     ====================================================
     `);
 
-    // If this the the first project being entered, an array for holding 'project' data is created. Otherwise, added projects will be added to existing array property.
-    // if (!teamData.internData) {
-    //     teamData.internData = [];
-    // }
-
     return inquirer
         .prompt([
             {
@@ -262,48 +252,7 @@ function finalizeTeam() {
     const integrateData = generateHTML(teamData)
     // ...which is then written to file via 'generateRoster.js'
     writeFile(integrateData)
-    .then(console.log("Your roster has been created."));
+        .then(console.log("Your roster has been created."));
     copyFile(integrateData)
-    .then(console.log("The stylesheet has been applied."));
+        .then(console.log("The stylesheet has been applied."));
 }
-
-
-// const mockData = [
-//     new Manager(
-//         'Eve Jones',
-//         34567,
-//         'ejones@work.org',
-//         1234
-//     ),
-//     new Engineer(
-//         'Tom Jones',
-//         12334,
-//         'tjones@work.org',
-//         'tjones'
-//     ),
-//     new Engineer(
-//         'Elsa Tomay',
-//         12674,
-//         'etomay@work.org',
-//         'etomay'
-//     ),
-//     new Intern(
-//         'Jules Verne',
-//         78901,
-//         'jverne@work.org',
-//         'University of Wisconsin'
-//     )
-// ]
-
-
-// function finalizeTeam() {
-//     console.log(teamData)
-//     const integrateData = generateHTML(teamData)
-//     writeFile(integrateData)
-// }
-
-// finalizeTeam();
-// const teamData = mockData;
-
-// const generateHTML = require('./src/roster-template.js');
-// const { writeFile, copyFile } = require('./utils/generateRoster.js');

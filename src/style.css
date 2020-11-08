@@ -1,7 +1,53 @@
+:root {
+    --primary: 'Chivo', sans-serif;
+    --secondary: 'Crimson Text', serif;
+    --lgreen: #e8f5e9;
+    --wgreen: #c8e6c9;
+    --bgreen: #ccff90;
+    --green: #388e3c;
+    --mgreen: #2e7d32;
+}
+
 * {
-    font-family: 'Chivo', sans-serif;
-    font-family: 'Crimson Text', serif;
-    --green: #4ca246;
-    --dkgreen: #007b30;
-    --blgreen: #03ad7a;
+    font-family: var(--secondary);
+    margin: 0;
+    padding: 0;
+}
+
+h3#title {
+    font-family: var(--primary);
+}
+
+div.card.col.s12.m6.l6 {
+    margin: 10px 10px;
+    padding: 0;
+}
+
+div.card-action {
+    background-color: var(--lgreen);
+    margin: 0;
+}
+
+a#link {
+    font-family: var(--primary);
+    color: var(--green);
+}
+
+a#link:hover {
+    color: var(--bgreen);
+}
+
+footer#ftr {
+    background-color: var(--mgreen);
+    font-family: var(--primary);
+    color: var(--wgreen);
+    padding: 10px;
+}
+
+a.right {
+    color: var(--wgreen);
+}
+
+a.right:hover {
+    color: var(--bgreen);
 }
