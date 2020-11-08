@@ -2,12 +2,11 @@
 const inquirer = require('inquirer');
 
 // an empty array is created to hold data for a newly initialized team.
-const teamData = [];
+const teamData = {manager: [], intern: [], engineer: []};
 
 // file generation
 const generateHTML = require('./src/roster-template.js');
 const { writeFile, copyFile } = require('./utils/generateRoster.js');
-// generateHTML.printData(teamData);
 
 // access core library modules
 const Engineer = require('./lib/Engineer');
@@ -77,13 +76,13 @@ const initializeTeam = () => {
             }
         }
     ])
-        .then(managerData => {
+        .then((managerData) => {
             const manager = new Manager(managerData.name, managerData.id, managerData.email, managerData.office)
-            teamData.push(manager)
-            addOrFinalize()
-        })
+            teamData.manager.push(manager);
+            addOrFinalize();
+        });
 };
-initializeTeam()
+initializeTeam();
 
 const addOrFinalize = () => {
     return inquirer
@@ -95,7 +94,7 @@ const addOrFinalize = () => {
                 choices: ['Engineer', 'Intern', 'Finalize team']
             }
         ])
-        .then(selection => {
+        .then((selection) => {
             if (selection.addOrComplete === 'Engineer') {
                 addEngineer();
             } else if (selection.addOrComplete === 'Intern') {
@@ -103,11 +102,11 @@ const addOrFinalize = () => {
             } else {
                 finalizeTeam();
             }
-        })
+        });
 };
 
 // captures data returned from 'initializeTeam' and calls itself recursively for as many team members required
-const addEngineer = engineerData => {
+const addEngineer = (engineerData) => {
     console.log(`
     ====================================================
     Answer the following to add an Engineer to the team:
@@ -175,16 +174,16 @@ const addEngineer = engineerData => {
             }
         ])
         // new member data is pushed to the 'teamData' array and a final dataset is returned to 'initializeTeam' as 'teamData'
-        .then(engineerData => {
+        .then((engineerData) => {
             const engineer = new Engineer(engineerData.name, engineerData.id, engineerData.email, engineerData.github)
-            teamData.engineerData.push(engineer)
-            console.log('engineerData:', engineerData)
-            console.log('engineer:', engineer)
-            addOrFinalize()
+            teamData.engineer.push(engineer);
+            console.log('engineerData:', engineerData);
+            console.log('engineer:', engineer);
+            addOrFinalize();
         })
 }
 
-const addIntern = internData => {
+const addIntern = (internData) => {
     console.log(`
     ====================================================
     Answer the following to add an Intern to the team:
@@ -252,25 +251,25 @@ const addIntern = internData => {
             }
         ])
         // new member data is pushed to the 'teamData' array and a final dataset is returned to 'initializeTeam' as 'teamData'
-        .then(internData => {
-            const intern = new Intern(internData.name, internData.id, internData.email, internData.school)
-            teamData.internData.push(intern)
-            console.log('internData:', internData)
-            console.log('intern:', intern)
-            addOrFinalize()
+        .then((internData) => {
+            const intern = new Intern(internData.name, internData.id, internData.email, internData.school);
+            teamData.intern.push(intern);
+            console.log('internData:', internData);
+            console.log('intern:', intern);
+            addOrFinalize();
         })
 }
 
 // passes final input array for page generation
 function finalizeTeam() {
-    console.log(teamData)
+    console.log({ teamData })
     // data passes to 'roster-template.js' which integrates the data into a string of HTML...
     const integrateData = generateHTML(teamData)
     // ...which is then written to file via 'generateRoster.js'
     writeFile(integrateData)
-        .then(console.log("Your roster has been created."))
+    .then(console.log("Your roster has been created."));
     copyFile(integrateData)
-        .then(console.log("The stylesheet has been applied."))
+    .then(console.log("The stylesheet has been applied."));
 }
 
 
