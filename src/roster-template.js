@@ -7,6 +7,7 @@ const display = () => {
 
   // function generates manager card
   const displayManager = (manager) => {
+    console.log('manager:', manager)
     return `
     <li class="collection-item">
       <div class="row">
@@ -29,6 +30,7 @@ const display = () => {
 
   // function generates engineer card
   const displayEngineer = (engineerData) => {
+    console.log('engineer: ', engineerData);
     engineerData.forEach(engineer => {
       return `
       <li class="collection-item">
@@ -53,6 +55,7 @@ const display = () => {
 
   // function generates intern card
   const displayIntern = (internData) => {
+    console.log('intern: ', internData)
     internData.forEach((intern) => {
       return `
       <li class="collection-item">
@@ -79,10 +82,9 @@ const display = () => {
 
 // function generates string of HTML for roster
 module.exports = (rosterData) => {
-  console.log('rosterData:', { rosterData });
+  console.log('rosterData:', rosterData);
 
   const displayTeam = display();
-  // const {Manager, engineerData, internData, ...data} = rosterData
 
   return `
     <!DOCTYPE html>
@@ -111,8 +113,8 @@ module.exports = (rosterData) => {
         </div>
       </nav>
       ${displayTeam.displayManager(rosterData.manager[0])}
-      ${displayTeam.displayManager(rosterData.engineer)}
-      ${displayTeam.displayManager(rosterData.intern)}
+      ${displayTeam.displayEngineer(rosterData.engineer)}
+      ${displayTeam.displayIntern(rosterData.intern)}
     </body>
 `
 }
