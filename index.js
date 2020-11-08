@@ -114,9 +114,9 @@ const addEngineer = (engineerData) => {
     `);
 
         // If this the the first project being entered, an array for holding 'project' data is created. Otherwise, added projects will be added to existing array property.
-        if (!teamData.engineerData) {
-            teamData.engineerData = [];
-        }
+        // if (!teamData.engineerData) {
+        //     teamData.engineerData = [];
+        // }
 
     return inquirer
         .prompt([
@@ -189,9 +189,9 @@ const addIntern = (internData) => {
     `);
 
     // If this the the first project being entered, an array for holding 'project' data is created. Otherwise, added projects will be added to existing array property.
-    if (!teamData.internData) {
-        teamData.internData = [];
-    }
+    // if (!teamData.internData) {
+    //     teamData.internData = [];
+    // }
 
     return inquirer
         .prompt([
@@ -258,7 +258,6 @@ const addIntern = (internData) => {
 
 // passes final input array for page generation
 function finalizeTeam() {
-    console.log({ teamData })
     // data passes to 'roster-template.js' which integrates the data into a string of HTML...
     const integrateData = generateHTML(teamData)
     // ...which is then written to file via 'generateRoster.js'
