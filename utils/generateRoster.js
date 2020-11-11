@@ -1,38 +1,31 @@
-const fs = require('fs');
+const fs = require('fs').promises;
 
-// output for this function is creation of a new HTML file, 'teamRoster.html'
-const writeFile = fileContent => {
-    return new Promise((resolve, reject) => {
-        fs.writeFile('dist/teamRoster.html', fileContent, err => {
-            // if there is an error, related message will be sent to Promise's 'catch()' method
-            if (err) {
-                reject(err);
-                // return out of present function to ensure the Promise is not inadvertantly passed to the 'resolve()' function
-                return;
-            }
-            // OR otherwise, Promise is sent to 'resolve()' and data returned to '.then()' method
-            resolve({
-                ok: true,
-                message: 'Roster created. Navigate to dist/teamRoster.html for review.'
-            });
-        });
-    });
+/**
+ * Writes the html to teamRoster.html
+ * 
+ * @param  {} fileContent
+ */
+const writeFile = async (fileContent) => {
+	try {
+		await fs.writeFile('dist/teamRoster.html', fileContent);
+		return 200;
+	}
+	catch (err) {
+		return err;
+	}
 };
 
-const copyFile = () => {
-    return new Promise((resolve, reject) => {
-        fs.copyFile('src/style.css', 'dist/style.css', err => {
-            if (err) {
-                reject(err);
-                return;
-            }
-            resolve({
-                ok: true,
-                message: 'Style sheet applied.'
-            });
-        });
-    });
+/**
+ * Copies styles into dist folder
+ */
+const copyFile = async () => {
+	try {
+		await fs.copyFile('src/style.css', 'dist/style.css');
+		return 200;
+	}
+	catch (err) {
+		return err;
+	}
 };
 
-// resolved data for both functions are exported 
 module.exports = { writeFile, copyFile };

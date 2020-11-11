@@ -1,7 +1,11 @@
 const Manager = require('../lib/Manager')
 
-test('creates a Manager object', () => {
-    const manager = new Manager('Eve', 34567, 'ejones@work.org', 1314);
-
-    expect(manager.office).toEqual(expect.any(Number))
+describe('Manager Object', () => {
+	it('creates a new manager object successfully', () => {
+		const manager = new Manager('Eve', 34567, 'Jones@work.org', 76543);
+		expect(manager.name).toEqual('Eve');
+		expect(manager.id).toEqual(34567);
+		expect(manager.email).toEqual('Jones@work.org');
+		expect(manager.office).toEqual(76543);
+	});
 });
